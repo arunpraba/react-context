@@ -1,26 +1,38 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import MainPage from "./Components/MainPage";
+import LoginPage from "./Components/LoginPage";
+import UserContext from "./context/UserContext";
+
+export default class App extends Component {
+  state = {
+    user: null
+  };
+
+  handleLogin = user => {
+    this.setState({
+      user
+    });
+  };
+
+  handleLogout = () => {
+    this.setState({
+      user: null
+    });
+  };
+
+  render() {
+    const { user } = this.state;
+    return (
+      <UserContext.Provider
+        value={{
+          user,
+          handleLogin: this.handleLogin,
+          handleLogout: this.handleLogout
+        }}
+      >
+        {user ? <MainPage /> : <LoginPage />}
+      </UserContext.Provider>
+    );
+  }
 }
-
-export default App;
