@@ -1,72 +1,51 @@
 import React, { Component } from "react";
-import UserContext from "../context/UserContext";
+
+import { EmailConsumer } from "../context/EmailContext";
 
 export default class Email extends Component {
-  state = {
-    lists: [
-      {
-        id: 1,
-        count: 10,
-        text: "Cras justo odio"
-      },
-      {
-        id: 2,
-        count: 20,
-        text: "Dapibus ac facilisis in"
-      },
-      {
-        id: 3,
-        count: 30,
-        text: "Morbi leo risus"
-      },
-      {
-        id: 4,
-        count: 40,
-        text: "Acdc facilisis in Dapibus"
-      }
-    ]
-  };
-
-  handleLogin = user => {
-    this.setState({
-      user
-    });
-  };
-
   render() {
-    const { lists } = this.state;
-
     return (
-      <UserContext.Consumer>
-        {({ user }) => (
-          <div className="container">
-            <div className="row justify-content-center mt-1">
-              <div className="col-8">
-                <h1 className="text-center text-primary">
-                  welcome {user.email.toUpperCase()}... 💐
-                </h1>
-              </div>
-            </div>
-            <div className="row justify-content-center my-5">
-              <div className="col-8">
-                <ul className="list-group">
-                  {lists.map(list => (
-                    <li
-                      key={list.id}
-                      className="list-group-item d-flex justify-content-between align-items-center"
+      <EmailConsumer>
+        {({ emails, currentEmail, handleSelectEmail }) => {
+          return (
+            <div className="row">
+              <div
+                className="col-4 border-right overflow-auto"
+                style={{ height: "80vh", paddingRight: 0 }}
+              >
+                <h5 className="text-primary text-center my-1">Inbox</h5>
+                <div className="list-group">
+                  {emails.map(({ id, title, email, date }) => (
+                    <button
+                      key={id}
+                      onClick={() =>
+                        handleSelectEmail({ id, title, email, date })
+                      }
+                      className={`list-group-item list-group-item-action p-2 border-left-0 border-top-0 border-right-0 ${
+                        currentEmail && currentEmail.id === id ? "active" : ""
+                      }`}
                     >
-                      {list.text}
-                      <span className="badge badge-primary badge-pill">
-                        {list.count}
-                      </span>
-                    </li>
+                      <div className="d-flex w-100 justify-content-between">
+                        <h5 className="mb-1">{title}</h5>
+                        <small>{date}</small>
+                      </div>
+                      <p className="text-truncate">{email}</p>
+                    </button>
                   ))}
-                </ul>
+                </div>
               </div>
+              {currentEmail && (
+                <div className="col-8">
+                  <h1 className="1">{currentEmail.title}</h1>
+                  <small>{currentEmail.date}</small>
+                  <hr />
+                  <p>{currentEmail.email}</p>
+                </div>
+              )}
             </div>
-          </div>
-        )}
-      </UserContext.Consumer>
+          );
+        }}
+      </EmailConsumer>
     );
   }
 }

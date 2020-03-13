@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import UserContext from "../context/UserContext";
+import { UserConsumer } from "../context/UserContext";
 
 class LoginPage extends Component {
   state = {
@@ -24,13 +24,19 @@ class LoginPage extends Component {
     const { email, password } = this.state;
 
     return (
-      <UserContext.Consumer>
+      <UserConsumer>
         {({ handleLogin }) => (
           <div className="container">
             <div className="row justify-content-center my-5">
-              <div className="col-4">
+              <div className=" col-md-4 col-sm-12 card shadow-sm p-3 mb-5 bg-white rounded">
                 <h1 className="text-center">Login</h1>
-                <form onSubmit={e => this.handleSubmit(e, handleLogin)}>
+                <small className="form-text text-center text-muted">
+                  It accepts any email and password
+                </small>
+                <form
+                  className="mt-3"
+                  onSubmit={e => this.handleSubmit(e, handleLogin)}
+                >
                   <div className="form-group">
                     <label>Email address</label>
                     <input
@@ -59,7 +65,7 @@ class LoginPage extends Component {
             </div>
           </div>
         )}
-      </UserContext.Consumer>
+      </UserConsumer>
     );
   }
 }

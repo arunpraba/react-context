@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import UserContext from "../context/UserContext";
+import { UserConsumer } from "../context/UserContext";
 
 export default class Navbar extends Component {
   render() {
     return (
-      <UserContext.Consumer>
+      <UserConsumer>
         {({ user, handleLogout }) => {
           return (
             <nav className="navbar navbar-light bg-light">
@@ -19,7 +19,7 @@ export default class Navbar extends Component {
             </nav>
           );
         }}
-      </UserContext.Consumer>
+      </UserConsumer>
     );
   }
 }
